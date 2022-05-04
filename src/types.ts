@@ -8,8 +8,4 @@ export interface AccountCreationOptions {
     returnUrl?: string
 }
 
-export interface AccountCreationErrorResponse {
-    error: string
-}
-
-export type AccountCreationResponse = CallbackPayload | AccountCreationErrorResponse
+export type AccountCreationResponse = CallbackPayload

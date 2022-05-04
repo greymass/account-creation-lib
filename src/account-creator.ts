@@ -10,6 +10,7 @@ export class AccountCreator {
     private supportedChains: ChainId[]
     private whalesplainerUrl: string
     private returnUrl: string
+    private popupStatusInterval?: ReturnType<typeof setInterval>
 
     constructor(public readonly options: AccountCreationOptions) {
         this.supportedChains = (options.supportedChains || []).map((id) => ChainId.from(id))
@@ -43,17 +44,38 @@ export class AccountCreator {
             height=600`
         )!
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const listener = (event: MessageEvent) => {
                 window.removeEventListener('message', listener)
-                this.popupWindow?.close()
-                resolve(event.data)
+                this.closeDialog()
+
+                if (event.data.error) {
+                    reject(new Error(event.data.error))
+                } else {
+                    resolve(event.data)
+                }
             }
             window.addEventListener('message', listener)
+
+            this.popupStatusInterval = setInterval(() => {
+                if (this.popupWindow && this.popupWindow.closed) {
+                    this.closeDialog()
+
+                    reject(new Error('Popup window closed'))
+                }
+            }, 500)
         })
     }
 
     closeDialog() {
         this.popupWindow?.close()
+
+        this.cleanup()
+    }
+
+    cleanup() {
+        this.popupStatusInterval && clearInterval(this.popupStatusInterval)
+        this.popupStatusInterval = undefined
+        this.popupWindow = undefined
     }
 }

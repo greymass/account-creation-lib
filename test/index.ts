@@ -15,6 +15,7 @@ suite('create request', function () {
         const req = lib.CreateRequest.from('anchorcreate://AQt0ZXN0Y29kZTEyMwAA')
         assert.equal(req.code, 'testcode123')
     })
+
     test('metadata', function () {
         const req1 = lib.CreateRequest.from({
             code: '666666',
