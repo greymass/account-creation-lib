@@ -1,7 +1,7 @@
 Account Creation Library
 =======
 
-This library allows you to prompt the user to create and initialize an account using Anchor.
+This library contains a CreateRequest wrapper that facilitates the management of account creation request tokens.
 
 ## Installation
 
@@ -15,34 +15,29 @@ npm install --save @greymass/account-creation
 
 ## Usage
 
-This function will automatically open a popup window prompting the user to buy an account. Once the payment is received,
-the account will be redirected to Anchor with an account creation code. Anchor is then expected to send a confirmation or
-error message back before sending the user back to the defined url.
 
 ```
-import { AccountCreator } from '@greymass/account-creation'
+import { CreateRequest } from '@greymass/account-creation'
 
-// Initialize the account creator object
-const accountCreator = new AccountCreator({
-  supportedChains: [], // List of supported chains.
-  scope: 'wallet', // A string representing the scope of the account creation.
-  returnUrl: 'http://wallet.greymass.com', // Url to return the user to once the account is created.
+// Initialize the CreateRequest object with a creation token:
+const createRequest = new CreateRequest("CREATION_TOKEN")
+
+// or with a list of params:
+const createRequest = new CreateRequest({
+    code: string
+    login_url?: string
+    login_scope?: NameType
+    return_path?: string
 })
 
-// Open a popup window prompting the user to create an account.
-accountCreator.createAccount().then((creationResult) => {
-  // Handle success
-}).catch((error) => {
-  // Handle error
-})
+// Get the create request login scope
+const loginScope = createRequest.login_scope
 
-console.log(creationResult);
-// {
-//   status: 'success',     // Will be success if the account was created successfully.
-//   actor: 'test.gm',      // Account name of the created account.
-//   network: '...',        // Chain id of the network where the account was created.
-//   identity_proof: {...}  // Signed identity proof, proving that the created account is owned by the current user.
-// }
+// Get the create request login esr
+const esrLoginRequest = createRequest.loginRequest
+
+// Get the token string
+const createRequestToken = createRequest.toString()
 ```
 
 ## Developing
