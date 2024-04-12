@@ -1,6 +1,6 @@
 {
     "name": "@greymass/account-creation",
-    "description": "An account creation library for EOSIO chains that leverages Anchor.",
+    "description": "An account creation library for antelope chains that leverages Anchor.",
     "version": "0.0.8",
     "homepage": "https://github.com/greymass/account-creation-lib",
     "license": "BSD-3-Clause",
@@ -16,11 +16,11 @@
         "prepare": "make"
     },
     "resolutions": {
-        "@greymass/eosio": "^0.6.0"
+        "@wharfkit/antelope": "^1.0.7"
     },
     "dependencies": {
-        "@greymass/eosio": "^0.6.0",
-        "eosio-signing-request": "^2.5.0",
+        "@wharfkit/antelope": "^1.0.7",
+        "@wharfkit/signing-request": "^3.2.0",
         "tslib": "^2.1.0"
     },
     "devDependencies": {
