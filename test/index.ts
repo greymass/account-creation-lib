@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 
-import { PermissionLevel } from '@greymass/eosio'
+import { PermissionLevel } from '@wharfkit/antelope'
 
 import * as lib from '$lib'
 

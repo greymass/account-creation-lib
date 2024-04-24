@@ -15,8 +15,8 @@ import {
     Serializer,
     Struct,
     VarUInt,
-} from '@greymass/eosio'
-import { Base64u, SigningRequest } from 'eosio-signing-request'
+} from '@wharfkit/antelope'
+import { Base64u, SigningRequest } from '@wharfkit/signing-request'
 
 export type CreateRequestArguments = {
     code: string
@@ -61,6 +61,11 @@ export class CreateRequest extends Struct {
             if (value.return_path) {
                 rv.return_path = value.return_path
             }
+            // Since info is set using setInfo below, no info in value allowed
+            // here it should always be [], not null. Just as strictExtensions does.
+            if (rv.info === null) {
+                rv.info = []
+            }
             return rv
         }
     }
@@ -77,7 +82,11 @@ export class CreateRequest extends Struct {
         if (version !== CreateRequest.version) {
             throw new Error(`Unsupported create request version: ${version}`)
         }
-        return Serializer.decode({ type: CreateRequest, data: data.slice(1) })
+        return Serializer.decode({
+            type: CreateRequest,
+            data: data.slice(1),
+            strictExtensions: true,
+        })
     }
 
     /** Login scope, only valid if login_url is set. */
